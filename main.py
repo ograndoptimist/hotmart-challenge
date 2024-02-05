@@ -65,7 +65,7 @@ def sintetize_text(model: VitsModel,
                      max_length=5909).to(device)
 
   with torch.no_grad():
-   output = model_tts(**inputs).waveform
+   output = model(**inputs).waveform
 
   return output
 
