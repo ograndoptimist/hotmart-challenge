@@ -5,7 +5,6 @@ import torch
 import whisper
 
 from transformers import MBartForConditionalGeneration, MBart50TokenizerFast
-
 from transformers import VitsModel, AutoTokenizer
 
 
@@ -95,10 +94,11 @@ def cut_audio(read_audio_path: str,
 
 def main(start_video,
          end_video
-         device):
+         device,
+         video_raw_path):
   ## Preprocess the data
   convert_to_audio(
-      read_video_path="case_ai.mp4",
+      read_video_path=video_raw_path,
       write_audio_path="case_ai_full_audio.mp3"
   )
 
@@ -146,25 +146,22 @@ def main(start_video,
 
   tokenizer_tts = AutoTokenizer.from_pretrained("facebook/mms-tts-eng")
 
-  output = sintetize_text(
+  en_audio = sintetize_text(
       model=model_tts,
       tokenizer=tokenizer_tts,
       text_input=translated_en_text
   )
 
-  output_arr = (
-    output
-    .cpu()
-    .numpy()
-  )
 
-  sampling_rate = (
-    model_tts
-    .config
-    .sampling_rate
-  )
+  ## Save outputs
+  save_txt(file=transcripted_pt_text,
+           destine="outputs/transcripted_portuguese_text.txt")
 
-  Audio(output_arr, rate=sampling_rate)
+  save_txt(file=translated_en_text,
+           destine="outputs/translated_en_text.txt")
+
+  save_txt(file=en_audio,
+           destine="outputs/en_audio.wav")
 
 
 if __name__ == "__main__":
@@ -173,11 +170,10 @@ if __name__ == "__main__":
 
    device = "cuda:0" if len(tf.config.list_physical_devices('GPU')) > 0 else "cpu"
 
+   video_raw_path = "case_ai.mp4"
+
    main(START_VIDEO,
         END_VIDEO,
-        device)
-
-
-
-
+        device,
+        video_raw_path)
 
