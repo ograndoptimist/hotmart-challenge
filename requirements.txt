@@ -1,0 +1,10 @@
+-e
+torch
+cohere
+openai
+tiktoken
+git+https://github.com/openai/whisper.git
+librosa
+soundfile==0.12.1
+transformers
+datasets
