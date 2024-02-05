@@ -1,6 +1,7 @@
 from moviepy.editor import *
 
 import torch
+import torchaudio
 
 import whisper
 
@@ -162,8 +163,10 @@ def main(start_video,
   save_txt(file=translated_en_text[0].encode(),
            destine="outputs/translated_en_text.txt")
 
-  save_txt(file=en_audio,
-           destine="outputs/en_audio.wav")
+  torchaudio.save(uri="en_audio.wav",
+                  src=en_audio.cpu(),
+                  sample_rate=model_tts.config.sampling_rate,
+                  format="wav")
 
 
 if __name__ == "__main__":
