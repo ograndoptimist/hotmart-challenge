@@ -94,7 +94,7 @@ def cut_audio(read_audio_path: str,
 
 
 def main(start_video: int,
-         end_video: int
+         end_video: int,
          device: str,
          video_raw_path: str,
          audio_raw_path: str,
