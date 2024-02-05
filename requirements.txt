@@ -1,5 +1,6 @@
 -e
 torch
+torchaudio
 cohere
 openai
 tiktoken
