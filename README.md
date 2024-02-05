@@ -1,5 +1,10 @@
 <h1>Challenge Solution </h1>
 
+<h3>Pipeline execution:</h3>
+<p>
+    To execute the whole project you just need to execute the main.py
+</p>
+
 <h3>Model's output:</h3>
 <p>
     You can find the request model's output inside the output folder:
