@@ -160,10 +160,10 @@ def main(start_video: int,
 
 
   ## Save outputs
-  save_txt(file=transcripted_pt_text.encode(),
+  save_txt(arq=transcripted_pt_text.encode(),
            destine="outputs/transcripted_pt_text.txt")
 
-  save_txt(file=translated_en_text[0].encode(),
+  save_txt(arq=translated_en_text[0].encode(),
            destine="outputs/translated_en_text.txt")
 
   torchaudio.save(uri="en_audio.wav",
