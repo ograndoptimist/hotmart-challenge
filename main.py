@@ -8,14 +8,14 @@ from transformers import MBartForConditionalGeneration, MBart50TokenizerFast
 from transformers import VitsModel, AutoTokenizer
 
 
-def save_txt(file: str,
+def save_txt(arq: str,
              destine: str):
   """
     Save txt files.
   """
   try:
-    with open(destine, "w") as file:
-      file.write(file)
+    with open(destine, "wb") as f:
+      f.write(arq)
   except:
     return "Error"
 
@@ -156,10 +156,10 @@ def main(start_video,
 
 
   ## Save outputs
-  save_txt(file=transcripted_pt_text,
+  save_txt(file=transcripted_pt_text.encode(),
            destine="outputs/transcripted_pt_text.txt")
 
-  save_txt(file=translated_en_text,
+  save_txt(file=translated_en_text[0].encode(),
            destine="outputs/translated_en_text.txt")
 
   save_txt(file=en_audio,
@@ -170,7 +170,7 @@ if __name__ == "__main__":
    START_VIDEO = 0
    END_VIDEO = 3 * 60
 
-   device = "cuda:0" if len(tf.config.list_physical_devices('GPU')) > 0 else "cpu"
+   device = "cuda:0" if torch.cuda.is_available() else "cpu"
 
    video_raw_path = "data/raw_data/case_ai.mp4"
    audio_raw_path = "data/raw_data/case_ai_full_audio.mp3"
