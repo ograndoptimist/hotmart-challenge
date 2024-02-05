@@ -93,12 +93,15 @@ def cut_audio(read_audio_path: str,
   segment.write_audiofile(save_sample_audio_path)
 
 
-def main(start_video,
-         end_video
-         device,
-         video_raw_path,
-         audio_raw_path,
-         audio_sample_raw_path):
+def main(start_video: int,
+         end_video: int
+         device: str,
+         video_raw_path: str,
+         audio_raw_path: str,
+         audio_sample_raw_path: str) -> None:
+  """
+    Execute the whole pipeline (data preprocessing + 3 models).
+  """
   ## Preprocess the data
   convert_to_audio(
       read_video_path=video_raw_path,
