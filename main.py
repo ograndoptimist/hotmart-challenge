@@ -95,16 +95,18 @@ def cut_audio(read_audio_path: str,
 def main(start_video,
          end_video
          device,
-         video_raw_path):
+         video_raw_path,
+         audio_raw_path,
+         audio_sample_raw_path):
   ## Preprocess the data
   convert_to_audio(
       read_video_path=video_raw_path,
-      write_audio_path="case_ai_full_audio.mp3"
+      write_audio_path= audio_raw_path
   )
 
   cut_audio(
-      read_audio_path="case_ai_full_audio.mp3",
-      save_sample_audio_path="case_ai_3min_sample_audio.mp3",
+      read_audio_path= audio_raw_path,
+      save_sample_audio_path=audio_sample_raw_path,
       start=start_video,
       end=end_video
   )
@@ -113,9 +115,9 @@ def main(start_video,
   ## Execute the transcription model
   transcription_model = whisper.load_model("medium")
 
-  transcripted_portuguese_text = transcribe_audio(
+  transcripted_pt_text = transcribe_audio(
     model=transcription_model,
-    audio_path="case_ai_3min_sample_audio.mp3"
+    audio_path=audio_sample_raw_path
   )
 
 
@@ -130,7 +132,7 @@ def main(start_video,
     model=translation_model,
     tokenizer=translation_tokenizer,
     targeted_language="en_XX",
-    portuguese_text=transcripted_portuguese_text
+    portuguese_text=transcripted_pt_text
   )
 
   ## Execute the TTS model
@@ -141,7 +143,7 @@ def main(start_video,
     model=translation_model,
     tokenizer=translation_tokenizer,
     targeted_language="en_XX",
-    portuguese_text=transcripted_text
+    portuguese_text=transcripted_pt_text
   )
 
   tokenizer_tts = AutoTokenizer.from_pretrained("facebook/mms-tts-eng")
@@ -155,7 +157,7 @@ def main(start_video,
 
   ## Save outputs
   save_txt(file=transcripted_pt_text,
-           destine="outputs/transcripted_portuguese_text.txt")
+           destine="outputs/transcripted_pt_text.txt")
 
   save_txt(file=translated_en_text,
            destine="outputs/translated_en_text.txt")
@@ -170,10 +172,14 @@ if __name__ == "__main__":
 
    device = "cuda:0" if len(tf.config.list_physical_devices('GPU')) > 0 else "cpu"
 
-   video_raw_path = "case_ai.mp4"
+   video_raw_path = "data/raw_data/case_ai.mp4"
+   audio_raw_path = "data/raw_data/case_ai_full_audio.mp3"
+   audio_sample_raw_path = "data/raw_data/case_ai_3min_sample_audio.mp3"
 
    main(START_VIDEO,
         END_VIDEO,
         device,
-        video_raw_path)
+        video_raw_path,
+        audio_raw_path,
+        audio_sample_raw_path)
 
